@@ -11,3 +11,4 @@ Fluff-Goals:
 1. Controll program that allows for intuative control of the camara movement from a laptop. 
 2. Records movement from any input to allow for infinite repeatability.
 3. Control from non-traditional input like a MYO or rotating tripod head.
+
