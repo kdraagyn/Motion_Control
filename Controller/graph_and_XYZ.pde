@@ -40,7 +40,7 @@ class graph {
   //map the time to the width of the graph window
   //display the data lines over the graph window
   void timeMap () {
-    scaleW = w / time;
+    scaleW = w / (time);
     l = data.length;
     
     if ((l != 1 || l != 1) || (l != 0 || l != 0)) {
@@ -58,6 +58,25 @@ class graph {
     
     //set the time of add
     dataTime = append(dataTime, time);
+  }
+  
+  float dataPoint (int i) {
+    return data[i];
+  }
+  
+  void playback(int i) {
+    strokeWeight(5);
+    stroke(0, 150, 0);
+    line(scaleW * dataTime[0 + i] + offsetX, scaleH + offsetY,scaleW * dataTime[0] + offsetX,-scaleH + offsetY);
+  }
+  
+  float getSize() {
+    return data.length;
+  }
+  
+  void delete() {
+    data = expand(data,0); 
+    dataTime = expand(data,0);
   }
 }
 
@@ -99,9 +118,27 @@ class XYZ {
   
   //take in the new data from the controller and augment the time to when the recording started
   void inputInstant(float ix, float iy, float iz) {
-    time = (millis() - clickTime) / 1000;
     x.newData(ix);
     y.newData(iy);
     z.newData(iz);
+  }
+  
+  void playback() {
+    float playTime = time;
+    for ( int i = 0; i < x.getSize(); i++) {
+      x.dataPoint(i);
+      y.dataPoint(i);
+      z.dataPoint(i);
+      
+      x.playback(i);
+      y.playback(i);
+      z.playback(i);
+    }
+  }
+  
+  void delete() {
+    x.delete();
+    y.delete();
+    z.delete();
   }
 }

@@ -9,6 +9,8 @@
 *
 * Still needs to be added:
 *   Playback with consistant timing
+*     green bar that scrolls through
+*     fixing timing issues in loops
 *   Curve editor
 *   Serial output to designated COM port
 *   Controller curve editor
@@ -29,9 +31,10 @@ ControllDevice device;
 ControllSlider s1x;
 ControllSlider s2y;
 ControllSlider s3z;
+ControllButton buttons[];
 
 static int SPACING = 50;        //the padding around each section in pixels
-static float displayMult = .5;  //the size of window for the application with 1 as full screen >.5 works the best
+static float displayMult = .75;  //the size of window for the application with 1 as full screen >.5 works the best
 
 int numberDevices; //Number of devices connected to the computer to use
 int deviceN;       //device number in list of devices from controll.getNumberOfDevices()
@@ -41,11 +44,17 @@ textButton[] menu;
 
 boolean picked = false;       //remember if a device has been picked or not
 boolean initialized = false;  //remember if the chosen device has been initialized
+boolean stopped = false;      //remember if the data stream has been stopped
+boolean saved = false;        //remember if the data has been saved for playback
+boolean restart = false;      //remember if the data is going to be cleared to start over;
 PFont disFont;                //create a font instance for all fonts used in the program
 
 //time variables to help display, save, and repeat each save
 float time;
 float clickTime;
+float pauseTime;
+float runningClearTime = 0;
+float stopTime;
 
 //the container for the graphs
 XYZ graphSect;
