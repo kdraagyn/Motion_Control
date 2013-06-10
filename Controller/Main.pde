@@ -70,18 +70,21 @@ void read() {
     }
     
     //toggle the pause button
+    //toggle button on my snakeByte controller is square.
     if (buttons[4].getValue() == 8 && stopped == false) {
       stopped = true;
       pauseTime = millis();
     } 
     
     //resume
+    //resume button on my snakeByte controller is X
     if (buttons[3].getValue() == 8 && stopped == true) {
       stopped = false;
       runningClearTime += millis() - pauseTime;
     }
     
     //save
+    //save button on my snakeByte controller is 'SELECT'
     if (buttons[9].getValue() == 8 && stopped == true) {
       saved = true;
     }
@@ -94,6 +97,9 @@ void read() {
 
 void play() {
   graphSect.playback();
+  
+  //reset
+  //reset button on my snakeByte controller is 'START'
   if (buttons[10].getValue() == 8 && saved == true) {
       println("delete");
       initialized = false;
