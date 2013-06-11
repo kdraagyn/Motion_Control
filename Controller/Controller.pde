@@ -50,13 +50,11 @@ boolean restart = false;      //remember if the data is going to be cleared to s
 PFont disFont;                //create a font instance for all fonts used in the program
 
 //time variables to help display, save, and repeat each save
-float time;
-float clickTime;
-float pauseTime;
-float runningClearTime = 0;
-float stopTime;
+time clock;
 
 //the container for the graphs
 XYZ graphSect;
+
+char state;
 
 

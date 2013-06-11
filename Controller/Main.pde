@@ -1,5 +1,9 @@
 //---------------------------MAIN PROCESSING LOOPS-----------------------------//
+
+
 void setup(){
+  //set frame rate and size of window
+  frameRate(100);
   size(int(displayWidth * displayMult),int(displayHeight  * displayMult), OPENGL);
   
   //initialize the procontroll I/O to find devices
@@ -16,19 +20,29 @@ void setup(){
   
   //initialize the graphs container (padding, locX, locY)
   graphSect = new XYZ(100, width / 2, height - 20);
+  
+  //time class to make timing all windows and playback easier
+  clock = new time();
 }
 
 void draw()
 {
-  if (!picked) {
-    devicesMenu();
-  } else {
-    if (!saved) {
-      read();
-      time = (millis() - clickTime - runningClearTime) / 1000;
-    } else {
-      play();
-    }
+  switch (state) {
+    case 'R':
+      
+      //set the window to the record window.
+      record();
+      break;
+    case 'C':
+    
+      //set the window to the curve editor
+      curves();
+      break;
+    default:
+    
+      //show the menu to set the state.
+      menu();
+      break;
   }
 }
 
@@ -50,9 +64,6 @@ void initializeDevice() {
   for (int i = 0; i < bs; i++) {
     buttons[i] = device.getButton(i);
   }
-  
-  //document the time that recording starts
-  clickTime = millis();
 }
 
 //--------------------------DEVICE READ---------------------------------//
@@ -60,27 +71,29 @@ void initializeDevice() {
 void read() {
   if (!initialized) {
       initializeDevice();
-    }
-    if (!stopped) {
-    //get values from the controller
-    graphSect.inputInstant(s1x.getValue(),s2y.getValue(),s3z.getValue());
+  } else {
     
     //display everything on the window
     HUD();
-    }
     
+    if (!stopped) {
+      //get values from the controller
+      instance();
+    }
+      
+    println(stopped);
     //toggle the pause button
     //toggle button on my snakeByte controller is square.
     if (buttons[4].getValue() == 8 && stopped == false) {
       stopped = true;
-      pauseTime = millis();
+      clock.pause();
     } 
     
     //resume
     //resume button on my snakeByte controller is X
     if (buttons[3].getValue() == 8 && stopped == true) {
       stopped = false;
-      runningClearTime += millis() - pauseTime;
+      clock.resume();
     }
     
     //save
@@ -88,14 +101,17 @@ void read() {
     if (buttons[9].getValue() == 8 && stopped == true) {
       saved = true;
     }
-  for (int i = 0; i < 16; i++) {
-    float value = buttons[i].getValue();
-    print("  " + i + ": " + value);
+    
+    fill(0);
+    for (int i = 0; i < 16; i++) {
+      float value = buttons[i].getValue();
+      text("  " + i + ": " + value, width / 10 + 75 * i, height - 100);
+    }
   }
-  println("");
 }
 
 void play() {
+  HUD();
   graphSect.playback();
   
   //reset
@@ -108,3 +124,27 @@ void play() {
       graphSect.delete();
     }
 }
+
+void record() {
+  clock.setTime();
+  background(100);
+  if (!picked) {
+    devicesMenu();
+  } else {
+    if (!saved) {
+      if ( graphSect.getNumberOfRuns() == 0) {
+        clock.start();
+      }
+      read();
+    } else {
+      clock.start();
+      play();
+    }
+  }
+}
+
+void instance() {
+    graphSect.inputInstant(s1x.getValue(),s2y.getValue(),s3z.getValue());
+}
+
+

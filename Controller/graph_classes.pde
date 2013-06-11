@@ -6,6 +6,7 @@ class graph {
   float w, h;
   float[] data = {};
   float[] dataTime = {};
+  float[] dataTimeStep = {};
   float scaleW, scaleH;
   int l;
   
@@ -33,14 +34,16 @@ class graph {
     rect(globalX, globalY, w, h, h / 200);
     strokeWeight(2);
     line(globalX - (w / 2), globalY, globalX + (w / 2), globalY);
-    strokeWeight(1);
     timeMap();
   }
 
   //map the time to the width of the graph window
   //display the data lines over the graph window
   void timeMap () {
-    scaleW = w / (time);
+    strokeWeight(1);
+    if (!stopped) {
+      scaleW = w / clock.getTime();
+    }
     l = data.length;
     
     if ((l != 1 || l != 1) || (l != 0 || l != 0)) {
@@ -56,27 +59,31 @@ class graph {
     //add another array value to the data array
     data = append(data, newD);
     
-    //set the time of add
-    dataTime = append(dataTime, time);
-  }
-  
-  float dataPoint (int i) {
-    return data[i];
+    //set the program time of the data point
+    dataTime = append(dataTime, clock.getTime());
+    
+    //setThe step time from the last point
+    dataTimeStep = append(dataTimeStep, clock.getStepSize());
   }
   
   void playback(int i) {
     strokeWeight(5);
     stroke(0, 150, 0);
-    line(scaleW * dataTime[0 + i] + offsetX, scaleH + offsetY,scaleW * dataTime[0] + offsetX,-scaleH + offsetY);
+    line(scaleW * dataTime[0 + i] + offsetX, scaleH + offsetY,scaleW * dataTime[i] + offsetX,-scaleH + offsetY);
+  }
+
+  float getData(int i) {
+    return data[i];
   }
   
-  float getSize() {
-    return data.length;
+  int getSize() {
+    return data.length - 2;
   }
   
   void delete() {
     data = expand(data,0); 
     dataTime = expand(data,0);
+    dataTimeStep = expand(data,0);
   }
 }
 
@@ -89,6 +96,9 @@ class XYZ {
   int h;
   int locX, locY;
   int border;
+  
+  //keep track time in the loop
+  int frame = 0;
   
   //initialize the graph container with three graphs inside of it
   XYZ (int iB, int ix, int iy) {
@@ -114,6 +124,7 @@ class XYZ {
     x.display();
     y.display();
     z.display();
+    output();
   }
   
   //take in the new data from the controller and augment the time to when the recording started
@@ -124,21 +135,34 @@ class XYZ {
   }
   
   void playback() {
-    float playTime = time;
-    for ( int i = 0; i < x.getSize(); i++) {
-      x.dataPoint(i);
-      y.dataPoint(i);
-      z.dataPoint(i);
-      
-      x.playback(i);
-      y.playback(i);
-      z.playback(i);
+    if (frame < x.getSize() && frame < y.getSize() && frame < z.getSize()) {
+      x.playback(frame);
+      y.playback(frame);
+      z.playback(frame);
+      frame += 2;
+    } else {
+      frame = 0;
     }
+  }
+  
+  void output() {
+    int counter;
+    if(!saved) {
+      frame = x.getSize() + 1;
+    } 
+    ellipse(100,100,50 + 40 * x.getData(frame),50 + 40 * x.getData(frame));
+    ellipse(200,100,50 + 40 * y.getData(frame),50 + 40 * y.getData(frame));
+    ellipse(300,100,50 + 40 * z.getData(frame),50 + 40 * z.getData(frame));
+    println(frame);
   }
   
   void delete() {
     x.delete();
     y.delete();
     z.delete();
+  }
+  
+  int getNumberOfRuns() {
+    return x.getSize();
   }
 }
