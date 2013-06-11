@@ -35,6 +35,7 @@ class graph {
     strokeWeight(2);
     line(globalX - (w / 2), globalY, globalX + (w / 2), globalY);
     timeMap();
+    rectMode(CORNER);
   }
 
   //map the time to the width of the graph window
@@ -70,6 +71,7 @@ class graph {
     strokeWeight(5);
     stroke(0, 150, 0);
     line(scaleW * dataTime[0 + i] + offsetX, scaleH + offsetY,scaleW * dataTime[i] + offsetX,-scaleH + offsetY);
+    strokeWeight(1);
   }
 
   float getData(int i) {
@@ -102,7 +104,7 @@ class XYZ {
   
   //initialize the graph container with three graphs inside of it
   XYZ (int iB, int ix, int iy) {
-    w = width;
+    w = width * 5 / 6;
     h = height;
     border = iB;
     locX = ix;
@@ -150,9 +152,9 @@ class XYZ {
     if(!saved) {
       frame = x.getSize() + 1;
     } 
-    ellipse(100,100,50 + 40 * x.getData(frame),50 + 40 * x.getData(frame));
-    ellipse(200,100,50 + 40 * y.getData(frame),50 + 40 * y.getData(frame));
-    ellipse(300,100,50 + 40 * z.getData(frame),50 + 40 * z.getData(frame));
+    ellipse(width * 15 / 16, height / 2, 50 + 20 * x.getData(frame), 50 + 20 * x.getData(frame));
+    ellipse(width * 15 / 16, height / 2 + 100, 50 + 20 * y.getData(frame), 50 + 20 * y.getData(frame));
+    ellipse(width * 15 / 16, height / 2 + 200, 50 + 20 * z.getData(frame), 50 + 20 * z.getData(frame));
     println(frame);
   }
   
@@ -164,5 +166,155 @@ class XYZ {
   
   int getNumberOfRuns() {
     return x.getSize();
+  }
+}
+
+class capsule {
+  textButton[] states;
+  int locX, locY;
+  float w, h;
+  int padding;
+  int spacing;
+
+  capsule() {
+    states = new textButton[3];
+
+    w = width / 8;
+    h = height / 3;
+    padding = int (w / 6);
+    spacing = int (h / 5);
+  }
+
+  void populate() {
+    states[0] = new textButton("Menu", locX + padding, locY + padding + spacing);
+    states[1] = new textButton("Recorder", locX + padding, locY + padding  + spacing * 2);
+    states[2] = new textButton("Curve Editor", locX + padding, locY + padding  + spacing * 3);
+  }
+  
+  void fullScreen() {
+    populate();
+    locX = width  * 2 / 5;
+    locY = height / 3 - 50;
+    display();
+  }
+
+
+  void smallScreen() {
+    populate();
+    locX = width * 6 / 7;
+    locY = 50;
+    display();
+  }
+
+  void display() {
+    setAlpha();
+    rect(locX, locY, w, h);
+    for (int i = 0; i < states.length; i++) {
+      states[i].show();
+    }
+  }
+
+  boolean hover () {
+    if (mouseX > locX && mouseX < locX + w && mouseY > locY && mouseY  < locY + h) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void setAlpha() {
+    if (hover()) {
+      stroke(0, 0, 0, 255);
+      fill(125, 125, 125, 255);
+    } else {
+      stroke(0, 0, 0, 0);
+      fill(0, 0, 0, 0);
+    }
+  }
+
+  void setPadding(int ip) {
+    padding = ip;
+  }
+
+  void clicked() {
+    if (states[0].clicked()) {
+      state = 'm';
+      println(state);
+    }
+    if (states[1].clicked()) {
+      state = 'r';
+      println(state);
+    }
+    if (states[2].clicked()) {
+      state = 'c';
+      println(state);
+    }
+  }
+}
+
+//--------------------------MENU CLASS DEFINITIONS-------------------------------//
+
+//create a menu item with a statement and ability to toggle
+class textButton {
+  String statement;
+  
+  int locX;
+  int locY;
+  int w;
+  int h;
+  int size;
+  
+  int OFFSET = 5;
+  
+  //initialize the botton with the device name and location on the screen
+  textButton(String name, int x, int y)
+  {
+    statement = name;
+    locX = x;
+    locY = y;
+    
+    //assign the width and height of the background boxes to the width of the menu text
+    w = int(textWidth(statement));
+    h = int(textWidth("T") * 1.5);
+  }
+  
+  //check if the mouse is hovering over the menu item
+  boolean hover()
+  {
+    if ((mouseX < (locX + w) && mouseX > locX) && (mouseY < (locY + OFFSET) && mouseY > (locY - h + OFFSET))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  //display the menu item
+  void show()
+  {
+    if (hover()) {
+      fill(155);
+    } else {
+      fill(0);
+    }
+    stroke(0);
+    rect(locX, locY - h + OFFSET, w, h);
+    fill(255);
+    text(statement, locX, locY);
+  }
+  
+  //check if the the mouse has clicked the menu item
+  boolean clicked()
+  {
+    if (mousePressed)
+    {
+      if(hover()) 
+      {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }

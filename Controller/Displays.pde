@@ -6,15 +6,15 @@ void devicesMenu() {
   int p = 0;
   //title of the menu
   text("Choose an available controller to use", width / 3, (height / 3) - SPACING);
-       
-  for(int i = 0; i < numberDevices; i++) {
+
+  for (int i = 0; i < numberDevices; i++) {
     device = controll.getDevice(i);
     if ( device.getNumberOfSliders () > 4) {
       p++;
-      text(device.getName(), width / 3 , (height / 3) + SPACING * p);
-      menu[i] = new textButton(device.getName(), width / 3 , (height / 3) + SPACING * p);
+      text(device.getName(), width / 3, (height / 3) + SPACING * p);
+      menu[i] = new textButton(device.getName(), width / 3, (height / 3) + SPACING * p);
       menu[i].show();
-      if(menu[i].clicked()) {
+      if (menu[i].clicked()) {
         deviceN = i;
         picked = true;
         break;
@@ -26,17 +26,18 @@ void devicesMenu() {
 void HUD () {
   if (!stopped) {
     //get values from the controller
-    record();
+    instance();
   }
-  
-  //display the graph's contatiner and subsequently the graphs as well
+  //draw the graphs to the screen
   graphSect.show();
 }
 
 void curves() {
-  
+  statesMenu.smallScreen();
+  statesMenu.clicked();
 }
 
 void menu() {
-  
+  statesMenu.fullScreen();
+  statesMenu.clicked();
 }
