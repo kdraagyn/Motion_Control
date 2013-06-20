@@ -8,9 +8,9 @@
  * Updated:6/9/2013
  *
  * Still needs to be added:
- *   Playback with consistant timing
- *     green bar that scrolls through
- *     fixing timing issues in loops
+ *   Clock for all edit and record windows
+ *     timing marks on graph display
+ *     input filter for smooth change in stepper motors
  *   Curve editor
  *   Serial output to designated COM port
  *   Controller curve editor

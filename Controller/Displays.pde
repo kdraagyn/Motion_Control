@@ -30,11 +30,13 @@ void HUD () {
   }
   //draw the graphs to the screen
   graphSect.show();
+  clock.display(width * 9 / 10, height * 9 / 10);
 }
 
 void curves() {
   statesMenu.smallScreen();
   statesMenu.clicked();
+  clock.display( width * 9 / 10, height * 9 / 10);
 }
 
 void menu() {

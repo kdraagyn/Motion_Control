@@ -81,14 +81,14 @@ void read() {
       //get values from the controller
       instance();
     }
-
-    //toggle the pause button
+    
+    //check to toggle the pause button
     //toggle button on my snakeByte controller is square.
     if (buttons[4].getValue() == 8 && stopped == false) {
-      stopped = true;
-      clock.pause();
+        stopped = true;
+        clock.pause();
     } 
-
+    
     //resume
     //resume button on my snakeByte controller is X
     if (buttons[3].getValue() == 8 && stopped == true) {
@@ -100,6 +100,7 @@ void read() {
     //save button on my snakeByte controller is 'SELECT'
     if (buttons[9].getValue() == 8 && stopped == true) {
       saved = true;
+      clock.reInitialize();
     }
 
     fill(0);
@@ -110,6 +111,7 @@ void read() {
   }
 }
 
+//-----------------DATA PLAYBACK--------------------------//
 void play() {
   HUD();
   graphSect.playback();
@@ -122,6 +124,7 @@ void play() {
     stopped = false;
     saved = false;
     graphSect.delete();
+    clock.restart();
   }
 }
 
@@ -132,11 +135,13 @@ void record() {
   } else {
     if (!saved) {
       if ( graphSect.getNumberOfRuns() == 0) {
-        clock.start();
+        clock.restart();
       }
       read();
     } else {
-      clock.start();
+      if (graphSect.frame == 0) {
+        clock.restart();
+      }
       play();
     }
   }

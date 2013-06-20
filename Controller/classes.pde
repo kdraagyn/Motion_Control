@@ -148,7 +148,6 @@ class XYZ {
   }
   
   void output() {
-    int counter;
     if(!saved) {
       frame = x.getSize() + 1;
     } 
