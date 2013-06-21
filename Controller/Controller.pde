@@ -21,6 +21,7 @@
 import procontroll.*;
 import java.io.*;
 import processing.opengl.*;
+import processing.serial.*;
 
 
 //------------------------------GLOBAL VARIABLES------------------------------------//
@@ -39,8 +40,9 @@ static float displayMult = .8;  //the size of window for the application with 1 
 int numberDevices; //Number of devices connected to the computer to use
 int deviceN;       //device number in list of devices from controll.getNumberOfDevices()
 
-//create a menu array with the device list
+//create a menu array with the device and ports list
 textButton[] menu;
+textButton[] ports;
 
 boolean picked = false;       //remember if a device has been picked or not
 boolean initialized = false;  //remember if the chosen device has been initialized
@@ -59,4 +61,13 @@ XYZ graphSect;
 char state;
 
 capsule statesMenu;
+
+//Serial instance to talk to arduino
+Serial serialOut;
+String comPort;
+
+//variables for the text input for correct COM port
+String Ttyping = "";
+String Tsaved = "";
+Boolean TdoneTyping = false;
 

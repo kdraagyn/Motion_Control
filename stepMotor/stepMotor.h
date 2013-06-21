@@ -16,16 +16,15 @@ class stepMotor
     stepMotor(int stepsPR, int a, int b, int c, int d);
     void setSpeed (long);
     void setPhase(int);
-	unsigned long getDelay(void);
-	void stepTime(unsigned long,unsigned long);
-	void step(void);
+	void step(long int);
 	long getSpeed(void);
+	unsigned long getDelay(void);
 
 	
   private:
     unsigned long lastStepTime;
 	int pin1,pin2,pin3,pin4;
-    unsigned long SPR;
+    int SPR;
     unsigned long timeDelay;
 	long speed;
 	boolean dir;	//true for CW and false for CCW

@@ -13,6 +13,7 @@ stepMotor x(xSteps,6,7,8,9);
 stepMotor y(ySteps,10,11,12,13);
 
 int val;
+long time;
 long xSpeed = 0;
 long ySpeed = 0;
 
@@ -28,9 +29,10 @@ void setup()
 
 void loop() 
 {
+  time = micros();
   checkAxis();
-  x.step();
-  y.step();
+  x.step(time);
+  y.step(time);
 }
 
 void checkAxis()

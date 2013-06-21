@@ -174,9 +174,11 @@ class capsule {
   float w, h;
   int padding;
   int spacing;
+  String[] menuNames = {"Menu", "Recorder", "Curve Editor", "Setup"};
+  char[] clickedName = {'m', 'r', 'c', 's'};
 
   capsule() {
-    states = new textButton[3];
+    states = new textButton[menuNames.length];
 
     w = width / 8;
     h = height / 3;
@@ -185,9 +187,10 @@ class capsule {
   }
 
   void populate() {
-    states[0] = new textButton("Menu", locX + padding, locY + padding + spacing);
-    states[1] = new textButton("Recorder", locX + padding, locY + padding  + spacing * 2);
-    states[2] = new textButton("Curve Editor", locX + padding, locY + padding  + spacing * 3);
+    for (int i = 0; i < menuNames.length; i++)
+    {
+      states[i] = new textButton(menuNames[i], locX + padding, locY + padding + spacing * (i + 1));
+    }
   }
   
   void fullScreen() {
@@ -236,17 +239,12 @@ class capsule {
   }
 
   void clicked() {
-    if (states[0].clicked()) {
-      state = 'm';
-      println(state);
-    }
-    if (states[1].clicked()) {
-      state = 'r';
-      println(state);
-    }
-    if (states[2].clicked()) {
-      state = 'c';
-      println(state);
+    for ( int i = 0; i < menuNames.length; i++) {
+      if(states[i].clicked())
+      {
+        state = clickedName[i];
+        println(state);
+      }
     }
   }
 }

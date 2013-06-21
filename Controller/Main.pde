@@ -40,6 +40,10 @@ void draw()
   case 'c':
     curves();
     break;
+    
+  case 's':
+    portsSetup();
+    break;
 
     //default the menu to full screen.
   default:
@@ -153,3 +157,26 @@ void instance() {
   graphSect.inputInstant(s1x.getValue(), s2y.getValue(), s3z.getValue());
 }
 
+//----------------------------DATA SEND-----------------------//
+//-------------------------TEXT IN---------------------------//
+void keyPressed() {
+  // If the return key is pressed, save the String and clear it
+  if (key == '\n' ) {
+    Tsaved = Ttyping;
+    // A String can be cleared by setting it equal to ""
+    Ttyping = ""; 
+    TdoneTyping = true;
+  } else {
+    println(keyCode);
+    if(keyCode == 8)
+    {
+      Ttyping = Ttyping.substring(0, Ttyping.length() - 1);
+    }
+    else
+    {
+    // Otherwise, concatenate the String
+    // Each character typed by the user is added to the end of the String variable.
+    Ttyping = Ttyping + key; 
+    }
+  }
+}

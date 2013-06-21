@@ -43,3 +43,19 @@ void menu() {
   statesMenu.fullScreen();
   statesMenu.clicked();
 }
+
+void portsSetup() 
+{
+  statesMenu.smallScreen();
+  statesMenu.clicked();
+  fill(0);
+  text("Type the arduino's comPort", width * 2 / 5, height / 2 - 80);
+  if(TdoneTyping)
+  {
+    comPort = Tsaved.toUpperCase();
+    serialOut = new Serial(this, "COM14",115200);
+  } else {
+    text(Ttyping, width / 2, height / 2);
+  }
+  fill(255);
+}

@@ -92,21 +92,19 @@ void stepMotor::setPhase(int a)
 
 }
   
-/*
-	rotate the stepper motor CW or CCW with a set speed for a set amount of time
-	(speed in RPM of the motor,	 time in milliseconds for the motor to rotate)
-*/
-
-void stepMotor::step() 
+void stepMotor::step(long time)
 {
+	if(time == -1) 
+	{
+		time = micros();
+	}
 	if (timeDelay == -1)
 	{
 		setPhase(0);
 	}
 	else
 	{
-		long stepTime = micros();
-		if(stepTime >= (lastStepTime + timeDelay))
+		if(time >= (lastStepTime + timeDelay))
 		{
 			if (dir) 
 			{
@@ -131,7 +129,7 @@ void stepMotor::step()
 				}
 			}
 			setPhase(phase);
-			lastStepTime = stepTime;
+			lastStepTime = time;
 		}
 	}
 }
