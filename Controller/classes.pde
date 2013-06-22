@@ -4,16 +4,24 @@ class graph {
   int globalX, globalY;
   float offsetX, offsetY;
   float w, h;
-  float[] data = {};
+  
+  //controller storage data
+  float[] data = {};      //(-1 to 1)
   float[] dataTime = {};
   float[] dataTimeStep = {};
   float scaleW, scaleH;
   int l;
+  int aMult = 100;
   
-  // initialize graphs (locX, locY, width, height)
-  graph(int ix, int iy, int iw, int ih) {
+  char name;
+  
+  // initialize graphs (locX, locY, width, height,send name ('x','y','z')
+  graph (int ix, int iy, int iw, int ih, char in)
+  {
     globalX = ix;
     globalY = iy;
+    
+    name = in;
     
     w = iw;
     h = ih;
@@ -70,8 +78,83 @@ class graph {
   void playback(int i) {
     strokeWeight(5);
     stroke(0, 150, 0);
-    line(scaleW * dataTime[0 + i] + offsetX, scaleH + offsetY,scaleW * dataTime[i] + offsetX,-scaleH + offsetY);
+    line(scaleW * dataTime[0 + i] + offsetX, scaleH + offsetY, scaleW * dataTime[i] + offsetX, -scaleH + offsetY);
     strokeWeight(1);
+  }
+  
+  String sendFormat(int frame) 
+  {
+    String sendString = " ";
+    if(data[frame] > 0)
+    {
+      sendString += name;
+    }
+    else
+    {
+      sendString += char(int(name) - ' ');
+    }
+    sendString += form(frame);
+    return sendString;
+  }
+  
+  String form(int frame) 
+  {
+    int dataSend = int(abs(data[frame] * aMult));
+    String stSend = "";
+    
+    char char1;
+    char char2;
+    char char3;
+    int full = dataSend / ('~');
+    switch(full) 
+    {
+      case 0:
+        if (dataSend == 0)
+        {
+          char1 = '0';
+        }
+        else
+        {
+          char1 = char(dataSend);
+        }
+        char2 = '0';
+        char3 = '0';
+        break;
+      case 1:
+        char1 = '~';
+        if (dataSend == 0)
+        {
+          char2 = '0';
+        }
+        else
+        {
+          char2 = char(dataSend - '~');
+        }
+        char3 = '0';
+        break;
+      case 2:
+        char1 = '~';
+        char2 = '~';
+        if (dataSend == 0)
+        {
+          char3 = '0';
+        }
+        else
+        {
+          char3 = char(dataSend - ('~' * 2));
+        };
+        break;
+      default:
+        char1 = '0';
+        char2 = '0';
+        char3 = '0';
+        break;
+    }
+    stSend += char3;
+    stSend += char2;
+    stSend += char1;
+    
+    return stSend;
   }
 
   float getData(int i) {
@@ -110,9 +193,9 @@ class XYZ {
     locX = ix;
     locY = iy;
     
-    x = new graph(locX, h / 6, w - border, (h - border) / 3);
-    y = new graph(locX, (h * 3) / 6, w - border, (h - border) / 3);
-    z = new graph(locX, (h * 5) / 6, w - border, (h - border) / 3);
+    x = new graph(locX, h / 6, w - border, (h - border) / 3, 'x');
+    y = new graph(locX, (h * 3) / 6, w - border, (h - border) / 3, 'y');
+    z = new graph(locX, (h * 5) / 6, w - border, (h - border) / 3, 'z');
   }
    
   //set the amount of padding around each graph 
@@ -147,6 +230,16 @@ class XYZ {
     }
   }
   
+  String sendFormat()
+  {
+    String send = " ";
+    send += x.sendFormat(frame);
+    send += y.sendFormat(frame);
+//    send += z.sendFormat();
+    println(send);
+    return send;
+  }
+  
   void output() {
     if(!saved) {
       frame = x.getSize() + 1;
@@ -154,7 +247,6 @@ class XYZ {
     ellipse(width * 15 / 16, height / 2, 50 + 20 * x.getData(frame), 50 + 20 * x.getData(frame));
     ellipse(width * 15 / 16, height / 2 + 100, 50 + 20 * y.getData(frame), 50 + 20 * y.getData(frame));
     ellipse(width * 15 / 16, height / 2 + 200, 50 + 20 * z.getData(frame), 50 + 20 * z.getData(frame));
-    println(frame);
   }
   
   void delete() {
@@ -243,7 +335,6 @@ class capsule {
       if(states[i].clicked())
       {
         state = clickedName[i];
-        println(state);
       }
     }
   }

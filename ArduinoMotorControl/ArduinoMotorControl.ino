@@ -13,6 +13,7 @@ stepMotor x(xSteps,6,7,8,9);
 stepMotor y(ySteps,10,11,12,13);
 
 int val;
+int dir;
 long time;
 long xSpeed = 0;
 long ySpeed = 0;
@@ -33,6 +34,9 @@ void loop()
   checkAxis();
   x.step(time);
   y.step(time);
+  Serial.print(ySpeed );
+  Serial.print(": ");
+  Serial.println(xSpeed);
 }
 
 void checkAxis()
@@ -45,17 +49,21 @@ void checkAxis()
       case 120:
         xSpeed = (Serial.read() - '0') + (Serial.read() - '0') + (Serial.read() - '0');
         x.setSpeed(xSpeed);
-        Serial.println(xSpeed);
         break;
       case 121:
         ySpeed = (Serial.read() - '0') + (Serial.read() - '0') + (Serial.read() - '0');
         y.setSpeed(ySpeed);
-        Serial.println(ySpeed);
         break;
       case 122:
         Serial.println("Silly, that hasn't been shown yet");
         break;
-      case 46:
+      case 'X':
+        xSpeed = -((Serial.read() - '0') + (Serial.read() - '0') + (Serial.read() - '0'));
+        x.setSpeed(xSpeed);
+        break;
+      case 'Y':
+        ySpeed = -((Serial.read() - '0') + (Serial.read() - '0') + (Serial.read() - '0'));
+        y.setSpeed(ySpeed);
         break;
       default:
         Serial.println("wrong motor selector");

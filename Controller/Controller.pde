@@ -49,6 +49,7 @@ boolean initialized = false;  //remember if the chosen device has been initializ
 boolean stopped = false;      //remember if the data stream has been stopped
 boolean saved = false;        //remember if the data has been saved for playback
 boolean restart = false;      //remember if the data is going to be cleared to start over;
+boolean connected = false;
 PFont disFont;                //create a font instance for all fonts used in the program
 
 //time variables to help display, save, and repeat each save

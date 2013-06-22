@@ -3,7 +3,7 @@ void setup()
 {
   //set frame rate and size of window
   frameRate(100);
-  size(int(displayWidth * displayMult), int(displayHeight  * displayMult), OPENGL);
+  size(int(displayWidth * displayMult), int(displayHeight  * displayMult));
 
   //initialize the procontroll I/O to find devices
   controll = ControllIO.getInstance(this);
@@ -11,7 +11,9 @@ void setup()
 
   //initialize the menu array to the size of the number of devices
   textButton[] button = new textButton[controll.getNumberOfDevices()];
+  textButton[] portInstance = new textButton[Serial.list().length];
   menu = button;                                                        //save this to the 'menu' object
+  ports = portInstance;                                                 //save portInstance to the 'ports' menu object
 
   //load fonts and set the font for text outputs
   disFont = loadFont("BodoniMT-24.vlw");
@@ -119,7 +121,7 @@ void read() {
 void play() {
   HUD();
   graphSect.playback();
-
+  
   //reset
   //reset button on my snakeByte controller is 'START'
   if (buttons[10].getValue() == 8 && saved == true) {
@@ -157,7 +159,6 @@ void instance() {
   graphSect.inputInstant(s1x.getValue(), s2y.getValue(), s3z.getValue());
 }
 
-//----------------------------DATA SEND-----------------------//
 //-------------------------TEXT IN---------------------------//
 void keyPressed() {
   // If the return key is pressed, save the String and clear it
@@ -167,7 +168,6 @@ void keyPressed() {
     Ttyping = ""; 
     TdoneTyping = true;
   } else {
-    println(keyCode);
     if(keyCode == 8)
     {
       Ttyping = Ttyping.substring(0, Ttyping.length() - 1);

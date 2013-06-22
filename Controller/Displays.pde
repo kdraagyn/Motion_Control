@@ -30,6 +30,10 @@ void HUD () {
   }
   //draw the graphs to the screen
   graphSect.show();
+  
+  //send command to arduino
+  serialOut.write(graphSect.sendFormat());
+    
   clock.display(width * 9 / 10, height * 9 / 10);
 }
 
@@ -49,13 +53,27 @@ void portsSetup()
   statesMenu.smallScreen();
   statesMenu.clicked();
   fill(0);
-  text("Type the arduino's comPort", width * 2 / 5, height / 2 - 80);
-  if(TdoneTyping)
-  {
-    comPort = Tsaved.toUpperCase();
-    serialOut = new Serial(this, "COM14",115200);
-  } else {
-    text(Ttyping, width / 2, height / 2);
+  text("Click the arduino's COM port", width * 2 / 5, height / 2 - 80);
+  int p = 0;
+//  if(TdoneTyping)
+//  {
+//    comPort = Tsaved.toUpperCase();
+//    serialOut = new Serial(this, comPort ,115200);
+//  } else {
+//    text(Ttyping, width / 2, height / 2);
+//  }
+//  fill(255);
+  String[] list = Serial.list();
+  for (int i = 0; i < list.length; i++) {
+    p++;
+    text(list[i], width / 3, (height / 3) + SPACING * p);
+    ports[i] = new textButton(list[i], width / 3, (height / 3) + SPACING * p);
+    ports[i].show();
+    if (ports[i].clicked() && connected == false) {
+      Tsaved = list[i];
+      serialOut = new Serial(this, Tsaved, 115200);
+      connected = true;
+      break;
+    }
   }
-  fill(255);
 }
