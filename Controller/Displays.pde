@@ -55,14 +55,7 @@ void portsSetup()
   fill(0);
   text("Click the arduino's COM port", width * 2 / 5, height / 2 - 80);
   int p = 0;
-//  if(TdoneTyping)
-//  {
-//    comPort = Tsaved.toUpperCase();
-//    serialOut = new Serial(this, comPort ,115200);
-//  } else {
-//    text(Ttyping, width / 2, height / 2);
-//  }
-//  fill(255);
+  
   String[] list = Serial.list();
   for (int i = 0; i < list.length; i++) {
     p++;

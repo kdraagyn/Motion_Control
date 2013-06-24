@@ -31,6 +31,7 @@ void setup()
 void loop() 
 {
   time = micros();
+  Serial.flush();
   checkAxis();
   x.step(time);
   y.step(time);
@@ -44,6 +45,7 @@ void checkAxis()
   if(Serial.available() > 0)
   {
     val = Serial.read();
+    Serial.println(val);
     switch (val)
     {
       case 120:
