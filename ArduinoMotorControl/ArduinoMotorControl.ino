@@ -1,3 +1,4 @@
+#include <shiftReg.h>
 #include <stepMotor.h>
 
 /*
@@ -33,8 +34,8 @@ void loop()
   time = micros();
   Serial.flush();
   checkAxis();
-  x.step(time);
-  y.step(time);
+  //x.step(time);
+  //y.step(time);
   Serial.print(ySpeed );
   Serial.print(": ");
   Serial.println(xSpeed);

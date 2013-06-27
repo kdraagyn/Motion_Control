@@ -63,8 +63,7 @@ void portsSetup()
     ports[i] = new textButton(list[i], width / 3, (height / 3) + SPACING * p);
     ports[i].show();
     if (ports[i].clicked() && connected == false) {
-      Tsaved = list[i];
-      serialOut = new Serial(this, Tsaved, 115200);
+      serialOut = new Serial(this, Serial.list()[i], 115200);
       connected = true;
       break;
     }
