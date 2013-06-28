@@ -12,19 +12,25 @@
 class shiftReg 
 {
 	public:
-		shiftReg(int,int,int);
-		void import(byte,int);
+		shiftReg(int,int,int);				//(latch pin, data pin, clock pin)
+		shiftReg(int,int,int,int);			//(latch pin, data pin, clock pin, register size)
+		void import(void);
 		void write(void);
 		byte getSendByte(void);
 		void begin(void);
 		void end(void);
 		void clear(void);
+		void pinWrite(int,int);				//(set pin, state)
+		void multiPinWrite(byte,int,int);	//(byte sequence, start pin, length)
+
 	
 	private:
 		int latchPin;
 		int clockPin;
 		int dataPin;
 		byte send;
+		int pinSize;
+		int pinState[8];
 };
 
 #endif	
