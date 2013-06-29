@@ -28,6 +28,9 @@ void HUD () {
     //get values from the controller
     instance();
   }
+  if (!connected) {
+    
+  } else {
   //draw the graphs to the screen
   graphSect.show();
   
@@ -35,6 +38,7 @@ void HUD () {
   serialOut.write(graphSect.sendFormat());
     
   clock.display(width * 9 / 10, height * 9 / 10);
+  }
 }
 
 void curves() {

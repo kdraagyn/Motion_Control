@@ -230,6 +230,20 @@ class XYZ {
     }
   }
   
+  void timelapse(int in)
+  {
+   if(frame < x.getSize() && frame < y.getSize() && frame < z.getSize()) 
+   {
+     x.playback(frame / in);
+     y.playback(frame / in);
+     z.playback(frame / in);
+   }
+   else
+   {
+     frame = 0;
+   }
+  }
+  
   String sendFormat()
   {
     String send = " ";

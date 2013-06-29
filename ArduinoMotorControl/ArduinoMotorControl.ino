@@ -10,8 +10,15 @@
 const int xSteps = 200;
 const int ySteps = 200;
 
-stepMotor x(xSteps,6,7,8,9);
-stepMotor y(ySteps,10,11,12,13);
+stepMotor x(xSteps);
+stepMotor y(ySteps);
+
+//pins for the shifters
+int latchPinS1 = 8;
+int dataPin = 11;
+int clockPin = 12;
+
+shiftReg shifter1(8,11,12);
 
 int val;
 int dir;
@@ -34,8 +41,9 @@ void loop()
   time = micros();
   Serial.flush();
   checkAxis();
-  //x.step(time);
-  //y.step(time);
+  shifter1.multiPinWrite(x.stepByte(time),1,4);
+  shifter1.multiPinWrite(y.stepByte(time),5,4);
+  shifter1.write();
   Serial.print(ySpeed );
   Serial.print(": ");
   Serial.println(xSpeed);
@@ -47,6 +55,7 @@ void checkAxis()
   {
     val = Serial.read();
     Serial.println(val);
+    Serial.flush();
     switch (val)
     {
       case 120:
