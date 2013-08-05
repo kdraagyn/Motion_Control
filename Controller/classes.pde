@@ -75,26 +75,35 @@ class graph {
     dataTimeStep = append(dataTimeStep, clock.getStepSize());
   }
   
-  void playback(int i) {
+  void playback(float a) {
+    int i = int(a);
     strokeWeight(5);
     stroke(0, 150, 0);
     line(scaleW * dataTime[0 + i] + offsetX, scaleH + offsetY, scaleW * dataTime[i] + offsetX, -scaleH + offsetY);
     strokeWeight(1);
   }
   
-  String sendFormat(int frame) 
+  String sendFormat(float in) 
   {
-    String sendString = " ";
-    if(data[frame] > 0)
+    if( in % 1 == 0) 
     {
-      sendString += name;
+      int frame = int(in);
+      String sendString = " ";
+      if(data[frame] > 0)
+      {
+        sendString += name;
+      }
+      else
+      {
+        sendString += char(int(name) - ' ');
+      }
+      sendString += form(frame);
+      return sendString;
     }
     else
     {
-      sendString += char(int(name) - ' ');
+      return "J";
     }
-    sendString += form(frame);
-    return sendString;
   }
   
   String form(int frame) 
@@ -157,7 +166,8 @@ class graph {
     return stSend;
   }
 
-  float getData(int i) {
+  float getData(float a) {
+    int i = int(a);
     return data[i];
   }
   
@@ -183,7 +193,8 @@ class XYZ {
   int border;
   
   //keep track time in the loop
-  int frame = 0;
+  float frame = 0;
+  float step = 0;
   
   //initialize the graph container with three graphs inside of it
   XYZ (int iB, int ix, int iy) {
@@ -230,13 +241,15 @@ class XYZ {
     }
   }
   
-  void timelapse(int in)
+  //input the amount of time between frames
+  void timelapse(float in)
   {
-   if(frame < x.getSize() && frame < y.getSize() && frame < z.getSize()) 
-   {
-     x.playback(frame / in);
-     y.playback(frame / in);
-     z.playback(frame / in);
+   step = 2 / (in * 30);
+   if((frame) < x.getSize() && frame < y.getSize() && frame < z.getSize()) {
+     x.playback(frame);
+     y.playback(frame);
+     z.playback(frame);
+     frame += step;
    }
    else
    {
@@ -362,22 +375,24 @@ class textButton {
   
   int locX;
   int locY;
-  int w;
-  int h;
+  float w;
+  float h;
   int size;
+  Boolean toggled = false;
   
   int OFFSET = 5;
   
   //initialize the botton with the device name and location on the screen
   textButton(String name, int x, int y)
   {
+    textSize(25);
     statement = name;
     locX = x;
     locY = y;
     
     //assign the width and height of the background boxes to the width of the menu text
-    w = int(textWidth(statement));
-    h = int(textWidth("T") * 1.5);
+    w = textWidth(statement);
+    h = textWidth("T") * 1.5;
   }
   
   //check if the mouse is hovering over the menu item
@@ -393,7 +408,7 @@ class textButton {
   //display the menu item
   void show()
   {
-    if (hover()) {
+    if (hover() || toggled) {
       fill(155);
     } else {
       fill(0);
@@ -417,6 +432,18 @@ class textButton {
       }
     } else {
       return false;
+    }
+  }
+  
+  void setToggled() 
+  {
+    if (toggled)
+    {
+      toggled = false;
+    }
+    else
+    {
+      toggled = true;
     }
   }
 }

@@ -12,6 +12,8 @@ void setup()
   //initialize the menu array to the size of the number of devices
   textButton[] button = new textButton[controll.getNumberOfDevices()];
   textButton[] portInstance = new textButton[Serial.list().length];
+  textButton TL = new textButton("Time Lapse", width * 7 / 8 + 100, height * 7 / 8 + 100);
+  timelapse = TL;
   menu = button;                                                        //save this to the 'menu' object
   ports = portInstance;                                                 //save portInstance to the 'ports' menu object
 
@@ -95,6 +97,13 @@ void read() {
         clock.pause();
     } 
     
+    //check to toggle the timelapse button
+    //toggle button on the snakeByte controller is triangle.
+    if (buttons[1].getValue() == 8)
+    {
+      timelapse.setToggled(); 
+    }
+    
     //resume
     //resume button on my snakeByte controller is X
     if (buttons[3].getValue() == 8 && stopped == true) {
@@ -120,7 +129,14 @@ void read() {
 //-----------------DATA PLAYBACK--------------------------//
 void play() {
   HUD();
-  graphSect.playback();
+  if(timelapse.toggled == true)
+  {
+    graphSect.timelapse(0.5);
+  }
+  else
+  {
+    graphSect.playback();
+  }
   
   //reset
   //reset button on my snakeByte controller is 'START'

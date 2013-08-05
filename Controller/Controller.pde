@@ -43,6 +43,9 @@ int deviceN;       //device number in list of devices from controll.getNumberOfD
 //create a menu array with the device and ports list
 textButton[] menu;
 textButton[] ports;
+textButton timelapse;
+
+String timelapseName = "Time Lapse";
 
 boolean picked = false;       //remember if a device has been picked or not
 boolean initialized = false;  //remember if the chosen device has been initialized

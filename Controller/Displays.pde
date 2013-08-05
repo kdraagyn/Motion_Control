@@ -23,21 +23,28 @@ void devicesMenu() {
   }
 }
 
-void HUD () {
+void HUD() {
   if (!stopped) {
     //get values from the controller
     instance();
   }
+  graphSect.show();
+  timelapse.show();
+  clock.display(width * 9 / 10, height * 9 / 10);
+  timelapse.show();
   if (!connected) {
     
   } else {
-  //draw the graphs to the screen
-  graphSect.show();
-  
-  //send command to arduino
-  serialOut.write(graphSect.sendFormat());
+    //draw the graphs to the screen
+    graphSect.show();
     
-  clock.display(width * 9 / 10, height * 9 / 10);
+    //send command to arduino
+    serialOut.write(graphSect.sendFormat());
+  }
+  
+  if(timelapse.clicked() == true)
+  {
+    timelapse.setToggled();
   }
 }
 
