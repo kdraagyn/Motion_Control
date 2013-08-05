@@ -33,6 +33,19 @@ stepMotor::stepMotor (int stepsPR)
 	SPR = stepsPR;
 	shiftRegister = true;
 }
+
+/*
+*	Constructor for a stepper motor connected to a stepper motor driver. 
+*	The arguments are the number of steps per revalution, the pin on driver that
+*	controls direction, and the pin on driver that controls the step.
+*/
+stepMotor::stepMotor(int stepsPR, int dirPin, int stepPin)
+{
+	SPR = stepsPR;
+	_dirPin = dirPin;
+	_stepPin = stepPin;
+}
+
 /*
 	Set the speed of the motor and depending on the sign of the input set the direction
 	of the motor. The time step is in microSeconds
@@ -183,6 +196,43 @@ void stepMotor::step(long time)
 			lastStepTime = time;
 		}
 	}
+}
+
+/*
+*	Step the stepper motor connected through a stepper motor driver.
+*	This has the same effect as step except phase not a parameter.
+*/
+void stepMotor::stepDriver()
+{
+	if(time == -1) 
+	{
+		time = micros();
+	}
+	if (timeDelay == -1)
+	{
+		setPhase(0);
+	}
+	else
+	{
+		if(time >= (lastStepTime + timeDelay))
+		{
+			if(dir)
+			{
+				digitalWrite(_dirPin,HIGH);
+			}
+			else
+			{
+				digitalWrite(_dirPin,LOW);
+			}
+			digitalWrite(_stepPin,HIGH);
+		}
+	}
+}
+
+//Set the direction of the motor. True for CW and false for CCW
+void stepMotor::setDirection(boolean direct)
+{
+	dir = direct;
 }
 
 /*

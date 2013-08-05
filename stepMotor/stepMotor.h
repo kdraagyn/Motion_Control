@@ -22,6 +22,10 @@ class stepMotor
     	unsigned long getDelay(void);
     	byte bytePhase(int);
 
+		//Stepper driver methods
+		void stepDriver(void);
+		void setDirection(boolean);
+
 	
   private:
     	unsigned long lastStepTime;
@@ -38,6 +42,10 @@ class stepMotor
     	int phase;
     	byte confPhase;
     	boolean shiftRegister;
+
+		// Stepper motor driver variables
+		int _dirPin;
+		int _stepPin;
 };
 
 #endif
