@@ -44,11 +44,15 @@ stepMotor::stepMotor(int stepsPR, int dirPin, int stepPin)
 	SPR = stepsPR;
 	_dirPin = dirPin;
 	_stepPin = stepPin;
+	lastStepTime = 0;
+	shiftRegister = false;
+	pinMode(_dirPin,OUTPUT);
+	pinMode(_stepPin,OUTPUT);
 }
 
 /*
 	Set the speed of the motor and depending on the sign of the input set the direction
-	of the motor. The time step is in microSeconds
+	of the motor. The time step is in microSeconds. The input is should be in RPM.
 */
 void stepMotor::setSpeed (long inSpeed) 
 {	
@@ -201,8 +205,9 @@ void stepMotor::step(long time)
 /*
 *	Step the stepper motor connected through a stepper motor driver.
 *	This has the same effect as step except phase not a parameter.
+*	Only argument is time and should be in microseconds.
 */
-void stepMotor::stepDriver()
+void stepMotor::stepDriver(long time)
 {
 	if(time == -1) 
 	{
@@ -225,6 +230,7 @@ void stepMotor::stepDriver()
 				digitalWrite(_dirPin,LOW);
 			}
 			digitalWrite(_stepPin,HIGH);
+			digitalWrite(_stepPin,LOW);
 		}
 	}
 }

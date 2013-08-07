@@ -29,6 +29,8 @@ void setup()
 
   //create state menu on the side of the screen
   statesMenu = new capsule();
+  
+  serialOut = new Serial(this, "COM14",115200);
 }
 
 void draw()

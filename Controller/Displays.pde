@@ -46,6 +46,8 @@ void HUD() {
   {
     timelapse.setToggled();
   }
+  
+    serialOut.write(graphSect.sendFormat());
 }
 
 void curves() {
@@ -66,17 +68,16 @@ void portsSetup()
   fill(0);
   text("Click the arduino's COM port", width * 2 / 5, height / 2 - 80);
   int p = 0;
-  
-  String[] list = Serial.list();
-  for (int i = 0; i < list.length; i++) {
-    p++;
-    text(list[i], width / 3, (height / 3) + SPACING * p);
-    ports[i] = new textButton(list[i], width / 3, (height / 3) + SPACING * p);
-    ports[i].show();
-    if (ports[i].clicked() && connected == false) {
-      serialOut = new Serial(this, Serial.list()[i], 115200);
-      connected = true;
-      break;
-    }
-  }
+//  String[] list = Serial.list();
+//  for (int i = 0; i < list.length; i++) {
+//    p++;
+//    text(list[i], width / 3, (height / 3) + SPACING * p);
+//    ports[i] = new textButton(list[i], width / 3, (height / 3) + SPACING * p);
+//    ports[i].show();
+//    if (ports[i].clicked() && connected == false) {
+//      serialOut = new Serial(this, Serial.list()[i], 115200);
+//      connected = true;
+//      break;
+//    }
+//  }
 }

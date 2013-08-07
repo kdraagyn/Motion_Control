@@ -14,6 +14,7 @@ class stepMotor
   public:
     	stepMotor(int stepsPR, int a, int b, int c, int d);
     	stepMotor(int);
+		stepMotor(int,int,int);
     	void setSpeed (long);
     	void setPhase(int);
     	void step(long int);
@@ -23,7 +24,7 @@ class stepMotor
     	byte bytePhase(int);
 
 		//Stepper driver methods
-		void stepDriver(void);
+		void stepDriver(long);
 		void setDirection(boolean);
 
 	
