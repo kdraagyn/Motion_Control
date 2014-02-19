@@ -12,3 +12,4 @@ Fluff-Goals:
 2. Records movement from any input to allow for infinite repeatability.
 3. Control from non-traditional input like a MYO or rotating tripod head.
 
+Well this project has gone cold due to life getting in the way
